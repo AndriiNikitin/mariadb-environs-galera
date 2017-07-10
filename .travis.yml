@@ -5,9 +5,11 @@ services:
 
 env:
   matrix:
-    - WORKAROUND=0
-    - WORKAROUND=1
+    - 
+    - WSREP_EXTRA_OPT=wssrep_method=rsync
+    - WSREP_EXTRA_OPT=wssrep_method=xtrabackup
+    - WSREP_EXTRA_OPT=wssrep_method=xtrabackup-v2
 
 script:
-  - cd _bugscript && bash -x show_bug_in_docker.sh MDEV-13283
-
+  - [[ ! "$WSREP_EXTRA_OPT" =~ xtrabackup ]] || ( yum install http://www.percona.com/downloads/percona-release/redhat/0.1-4/percona-release-0.1-4.noarch.rpm && yum install xtrabackup-24 -y )
+  - cd _bugscript && bash -x show_bug_in_docker.sh
