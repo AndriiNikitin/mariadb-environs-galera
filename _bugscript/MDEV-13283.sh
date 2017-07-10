@@ -11,7 +11,7 @@ cat cluster1/nodes.lst
 cluster1/replant.sh ${ver}
 m0*/download.sh
 
-[ "$WORKAROUND" != 1 ] || sed -i "s/Distrib 10.1/Distrib 10.^0/g" _depot/m-tar/${ver}/bin/wsrep_sst_mysqldump.sh
+[ "$WORKAROUND" != 1 ] || sed -i "s/Distrib 10.1/Distrib 10.^0/g" _depot/m-tar/${ver}/bin/wsrep_sst_mysqldump
 
 cluster1/gen_cnf.sh
 cluster1/install_db.sh
