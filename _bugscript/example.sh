@@ -2,9 +2,17 @@ set -e
 
 ver=10.2.6
 
-[ -d mariadb-environs ] || git clone http://github.com/AndriiNikitin/mariadb-environs
-cd mariadb-environs
-./get_plugin.sh galera
+# just use current directory if called from framework
+if [ ! -f common.sh ] ; then
+  [ -d mariadb-environs ] || git clone http://github.com/AndriiNikitin/mariadb-environs
+  cd mariadb-environs
+  ./get_plugin.sh galera
+fi
+
+function onExit {
+  [ "$passed" == 1 ] || cluster1/tail_log.sh 45
+}
+trap onExit EXIT
 
 _template/plant_cluster.sh cluster1
 cat cluster1/nodes.lst
@@ -27,4 +35,4 @@ grep -A10 -B10 -i "\[ERROR\]" m0*/dt/error.log || echo no errors found
 
 cluster_size=$(m0*/sql.sh 'show status like "wsrep_cluster_size"')
 
-[[ "${cluster_size}" =~ 4 ]]
+[[ "${cluster_size}" =~ 4 ]] && passed=1
