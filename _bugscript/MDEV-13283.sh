@@ -23,3 +23,4 @@ cluster1/galera_cluster_size.sh
 
 grep -A10 -B10 -i ERROR m0*/dt/error.log || echo no errors found
 
+[ 4 == $(m0*/sql.sh 'show status like "wsrep_cluster_size"') ]
