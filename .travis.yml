@@ -5,7 +5,7 @@ services:
 
 env:
   matrix:
-    - 
+    - WSREP_EXTRA_OPT=wssrep_method=mysqldump 
     - WSREP_EXTRA_OPT=wssrep_method=rsync
     - WSREP_EXTRA_OPT=wssrep_method=xtrabackup
     - WSREP_EXTRA_OPT=wssrep_method=xtrabackup-v2
