@@ -9,6 +9,6 @@ env:
     - WORKAROUND=1
 
 script:
-  - cd _script
-  - bash -x _script/show_bug_in_docker.sh MDEV-13283
+  - cd _bugscript
+  - bash -x _bugscript/show_bug_in_docker.sh MDEV-13283
 
