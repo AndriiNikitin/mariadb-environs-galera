@@ -21,5 +21,5 @@ cluster1/galera_start_new.sh
 sleep 45
 cluster1/galera_cluster_size.sh
 
-grep -A10 -B10 -i ERROR m0/dt/error.log || echo no errors found
+grep -A10 -B10 -i ERROR m0*/dt/error.log || echo no errors found
 
