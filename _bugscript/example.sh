@@ -21,6 +21,7 @@ cluster1/galera_start_new.sh $WSREP_EXTRA_OPT
 
 sleep 45
 cluster1/galera_cluster_size.sh
+cluster1/sql.sh 'show variables like "wsrep_sst_method"'
 
 grep -A10 -B10 -i "\[ERROR\]" m0*/dt/error.log || echo no errors found
 
