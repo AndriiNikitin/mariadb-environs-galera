@@ -9,6 +9,8 @@ COPY ${1}.sh ${1}.sh
 
 RUN cat ${1}.sh
 
+ENV WORKAROUND "$WORKAROUND"
+
 RUN bash -v -x ${1}.sh
 EOF
 
