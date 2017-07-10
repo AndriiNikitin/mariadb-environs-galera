@@ -15,5 +15,4 @@ env:
     - WSREP_EXTRA_OPT=wssrep_method=xtrabackup-v2
 
 script:
-  - [[ ! "$WSREP_EXTRA_OPT" =~ xtrabackup ]] || { yum install http://www.percona.com/downloads/percona-release/redhat/0.1-4/percona-release-0.1-4.noarch.rpm -y && yum install xtrabackup-24 -y; }
   - cd _bugscript && bash -x show_bug_in_docker.sh
