@@ -3,6 +3,10 @@ sudo: required
 services:
   - docker
 
+install:
+  - yum install http://www.percona.com/downloads/percona-release/redhat/0.1-4/percona-release-0.1-4.noarch.rpm -y
+  - yum install xtrabackup-24 -y
+
 env:
   matrix:
     - WSREP_EXTRA_OPT=wssrep_method=mysqldump 
