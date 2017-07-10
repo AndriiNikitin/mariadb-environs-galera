@@ -4,10 +4,10 @@ services:
   - docker
 env:
   matrix:
-    - WSREP_EXTRA_OPT=wssrep_sst_method=mysqldump 
-    - WSREP_EXTRA_OPT=wssrep_sst_method=rsync
-    - WSREP_EXTRA_OPT=wssrep_sst_method=xtrabackup
-    - WSREP_EXTRA_OPT=wssrep_sst_method=xtrabackup-v2
+    - WSREP_EXTRA_OPT=wsrep_sst_method=mysqldump 
+    - WSREP_EXTRA_OPT=wsrep_sst_method=rsync
+    - WSREP_EXTRA_OPT=wsrep_sst_method=xtrabackup
+    - WSREP_EXTRA_OPT=wsrep_sst_method=xtrabackup-v2
 
 script:
   - cd _bugscript && bash -x -v show_bug_in_docker.sh
