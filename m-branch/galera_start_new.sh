@@ -4,8 +4,8 @@ if [ -f /usr/lib/galera/libgalera_smm.so ] ; then
   echo wsrep_provider=/usr/lib/galera/libgalera_smm.so >> __workdir/mysqldextra.cnf
 elif [ -f /usr/lib64/galera/libgalera_smm.so ] ; then
   echo wsrep_provider=/usr/lib64/galera/libgalera_smm.so >> __workdir/mysqldextra.cnf
-elif [ -f __workdir/../_depot/m-tar/__version/lib/libgalera_smm.so ] ; then
-  echo wsrep_provider=__workdir/../_depot/m-tar/__version/lib/libgalera_smm.so >> __workdir/mysqldextra.cnf
+elif [ ! -z "$(echo __workdir/../_depot/m-tar/*/lib/libgalera_smm.so 2>/dev/null | head -n1)" ] ; then
+  echo wsrep_provider=$(echo __workdir/../_depot/m-tar/*/lib/libgalera_smm.so 2>/dev/null | head -n1) >> __workdir/mysqldextra.cnf
 else
   >&2 echo "Cannot find libgalera"
   exit 2
@@ -36,8 +36,8 @@ done
 
 
 # this to let galera find mysqldump and mysql
-export PATH=__workdir/../_depot/m-tar/__version/bin:$PATH
+export PATH=__blddir/client:__srcdir/scripts:__blddir/extra:$PATH
 
-__workdir/../_depot/m-tar/__version/bin/mysqld_safe --defaults-file=__workdir/my.cnf --skip-syslog --user=$(whoami) --wsrep-new-cluster & 
+bash __srcdir/scripts/mysqld_safe.sh --defaults-file=__workdir/my.cnf --skip-syslog --ledir=__blddir/sql --user=$(whoami) --wsrep-new-cluster & 
 sleep 5
 __workdir/wait_respond.sh

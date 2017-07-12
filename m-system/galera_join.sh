@@ -32,5 +32,5 @@ echo wsrep_node_name=$h >> /etc/my.cnf
 echo wsrep_cluster_name=$cluster_name  >> /etc/my.cnf
 echo wsrep_cluster_address="gcomm://$join_ip" >> /etc/my.cnf
 
-mysqld_safe --loose-syslog=0 --user=$(whoami) &
+mysqld_safe --skip-syslog --user=$(whoami) &
 __workdir/wait_respond.sh

@@ -52,5 +52,5 @@ fi
 # let mysqld find mysqldump
 export PATH=$PATH:__workdir/../_depot/m-tar/__version/bin
 
-__workdir/../_depot/m-tar/__version/bin/mysqld_safe --defaults-file=__workdir/my.cnf --loose-syslog=0 --user=$(whoami) &
+__workdir/../_depot/m-tar/__version/bin/mysqld_safe --defaults-file=__workdir/my.cnf --skip-syslog --user=$(whoami) &
 __workdir/wait_respond.sh

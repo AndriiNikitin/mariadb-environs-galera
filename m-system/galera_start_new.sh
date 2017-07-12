@@ -27,5 +27,5 @@ echo wsrep_node_name=$h >> /etc/my.cnf
 echo wsrep_cluster_address=gcomm://$h >> /etc/my.cnf
 echo wsrep_cluster_name=$h >> /etc/my.cnf
 
-mysqld_safe --loose-syslog=0 --wsrep-new-cluster --user=$(whoami) &
+mysqld_safe --skip-syslog --wsrep-new-cluster --user=$(whoami) &
 __workdir/wait_respond.sh
