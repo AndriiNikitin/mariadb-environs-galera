@@ -25,7 +25,7 @@ cluster1/replant.sh ${ver}
 
 # workaround MDEV-13283
 [[ ! "$WSREP_EXTRA_OPT" =~ mysqldump ]] || \
-  [ ! -d _deport/m-tar/${ver} ] || \
+  [ ! -d _depot/m-tar/${ver} ] || \
   sed -i "s/Distrib 10.1/Distrib 10/g" _depot/m-tar/${ver}/bin/wsrep_sst_mysqldump
 
 # workaround MDEV-10477

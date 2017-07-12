@@ -61,5 +61,5 @@ export PATH=$PATH:__workdir/../_depot/m-tar/__version/bin
 __workdir/../_depot/m-tar/__version/bin/mysqld_safe --defaults-file=__workdir/my.cnf --loose-syslog=0 --user=$(whoami) &
 # mysqld will restart during cluster joining so we need sleep before wait_respond,
 # otherwise it may (incorrectly) report that attempt failed
-sleep 5
+sleep 20
 __workdir/wait_respond.sh
