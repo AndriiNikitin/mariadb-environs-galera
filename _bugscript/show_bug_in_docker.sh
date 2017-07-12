@@ -26,5 +26,5 @@ ENV WSREP_EXTRA_OPT "$WSREP_EXTRA_OPT"
 RUN bash -v -x ${1:-example}.sh
 EOF
 
-docker build x1 .
+docker build .
 
