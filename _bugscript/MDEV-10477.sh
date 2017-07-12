@@ -10,27 +10,17 @@ if [ ! -f common.sh ] ; then
 fi
 
 function onExit {
-  [ "$passed" == 1 ] && exit
-  cluster1/tail_log.sh 100
-# uncomment if you wish docker build hang on failire (to attach to container and troubleshoot)
-#  sleep 10000
+  [ "$passed" == 1 ] || cluster1/tail_log.sh 100
 }
 trap onExit EXIT
 
 _template/plant_cluster.sh cluster1
-cat cluster1/nodes.lst
 cluster1/replant.sh ${ver}
 
 ./build_or_download.sh m0
 
-# workaround MDEV-13283
-[ ! "$WSREP_EXTRA_OPT" =~ mysqldump ] || \
-  [ ! -d _deport/m-tar/${ver} ] || \
-  sed -i "s/Distrib 10.1/Distrib 10/g" _depot/m-tar/${ver}/bin/wsrep_sst_mysqldump
-
 # workaround MDEV-10477
-[ ! "$WSREP_EXTRA_OPT" =~ rsync ] || \
-  [ $(whoami) != root ] || \
+[ $(whoami) != root ] || \
   [ ! -d _depot/m-tar/${ver} ] || \
   sed -i '/read only = no/s/.*/&\nuid = root\ngid = root\n/' _depot/m-tar/${ver}/bin/wsrep_sst_rsync
 

@@ -7,7 +7,7 @@ set -e
 
 for eid in $(cat __clusterdir/nodes.lst) ; do
   $eid*/startup.sh
-  $eid*/sql.sh create user "$(whoami)"@"$(hostname -i)"
+  $eid*/sql.sh create user if not exists "$(whoami)"@"$(hostname -i)"
   $eid*/sql.sh grant all on \*.\* to "$(whoami)"@"$(hostname -i)"
   $eid*/shutdown.sh
 done
