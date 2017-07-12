@@ -24,12 +24,12 @@ cluster1/replant.sh ${ver}
 ./build_or_download.sh m0
 
 # workaround MDEV-13283
-[ ! "$WSREP_EXTRA_OPT" =~ mysqldump ] || \
+[[ ! "$WSREP_EXTRA_OPT" =~ mysqldump ]] || \
   [ ! -d _deport/m-tar/${ver} ] || \
   sed -i "s/Distrib 10.1/Distrib 10/g" _depot/m-tar/${ver}/bin/wsrep_sst_mysqldump
 
 # workaround MDEV-10477
-[ ! "$WSREP_EXTRA_OPT" =~ rsync ] || \
+[[ ! "$WSREP_EXTRA_OPT" =~ rsync ]] || \
   [ $(whoami) != root ] || \
   [ ! -d _depot/m-tar/${ver} ] || \
   sed -i '/read only = no/s/.*/&\nuid = root\ngid = root\n/' _depot/m-tar/${ver}/bin/wsrep_sst_rsync
