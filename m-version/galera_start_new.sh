@@ -39,5 +39,5 @@ done
 export PATH=__workdir/../_depot/m-tar/__version/bin:$PATH
 
 __workdir/../_depot/m-tar/__version/bin/mysqld_safe --defaults-file=__workdir/my.cnf --skip-syslog --user=$(whoami) --wsrep-new-cluster & 
-sleep 5
+sleep 15
 __workdir/wait_respond.sh
