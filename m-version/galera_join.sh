@@ -31,8 +31,6 @@ EOL
 
 h=$(hostname -i)
 
-set -x
-
 echo wsrep_cluster_name=$cluster_name  >> __workdir/mysqldextra.cnf
 # check if we join the same host
 if [ "$join_ip" != "$h" ] ; then
