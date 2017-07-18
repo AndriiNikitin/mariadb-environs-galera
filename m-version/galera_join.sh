@@ -56,7 +56,7 @@ done
 # let mysqld find mysqldump
 export PATH=$PATH:__workdir/../_depot/m-tar/__version/bin
 
-__workdir/../_depot/m-tar/__version/bin/mysqld_safe --defaults-file=__workdir/my.cnf --skip-syslog --user=$(whoami) &
+__workdir/../_depot/m-tar/__version/bin/mysqld_safe --defaults-file=__workdir/my.cnf --ledir=__workdir/../_depot/m-tar/__version/bin --skip-syslog --user=$(whoami) &
 # mysqld will restart during cluster joining so we need sleep before wait_respond,
 # otherwise it may (incorrectly) report that attempt failed
 sleep 20

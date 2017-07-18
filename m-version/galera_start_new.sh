@@ -38,6 +38,6 @@ done
 # this to let galera find mysqldump and mysql
 export PATH=__workdir/../_depot/m-tar/__version/bin:$PATH
 
-__workdir/../_depot/m-tar/__version/bin/mysqld_safe --defaults-file=__workdir/my.cnf --skip-syslog --user=$(whoami) --wsrep-new-cluster & 
+__workdir/../_depot/m-tar/__version/bin/mysqld_safe --defaults-file=__workdir/my.cnf --ledir=__workdir/../_depot/m-tar/__version/bin --skip-syslog --user=$(whoami) --wsrep-new-cluster & 
 sleep 15
 __workdir/wait_respond.sh
