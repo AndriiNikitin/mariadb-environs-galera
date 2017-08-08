@@ -1,10 +1,9 @@
 #!/bin/bash
 
 [ ! -z "$1" ] || { echo "Expected name of Galera cluster as first parameter; got ($1)";  exit 2; }
-[ ! -z "$2" ] || { echo "Expected IP of Galera node in 2nd parameter; got ($2)";  exit 2; }
+[ ! -z "$2" ] || { echo "Expected IP:port of donor Galera node in 2nd parameter; got ($2)";  exit 2; }
 
 cluster_name=$1
-
 join_ip=$2
 
 if [ -f /usr/lib/galera/libgalera_smm.so ] ; then
@@ -29,22 +28,13 @@ wsrep_on=ON
 wsrep_sst_method=mysqldump
 EOL
 
-h=$(hostname -i)
+h=$(__workdir/galera_ip.sh)
+p=$(__workdir/galera_port.sh)
 
 echo wsrep_cluster_name=$cluster_name  >> __workdir/mysqldextra.cnf
-# check if we join the same host
-if [ "$join_ip" != "$h" ] ; then
-  # configure for remote node on default port
-  echo wsrep_node_address=$h >> __workdir/mysqldextra.cnf
-  echo wsrep_node_name=$h >> __workdir/mysqldextra.cnf
-  echo wsrep_cluster_address="gcomm://$join_ip" >> __workdir/mysqldextra.cnf
-else
-  # configure for node on the same host
-  galera_port=$((__wid+4567))
-  echo wsrep_node_address=${h}:${galera_port} >> __workdir/mysqldextra.cnf
-  echo wsrep_node_name=${h}${galera_port} >> __workdir/mysqldextra.cnf
-  echo wsrep_cluster_address="gcomm://$join_ip:4567" >> __workdir/mysqldextra.cnf
-fi
+echo wsrep_node_address=$h:$p >> __workdir/mysqldextra.cnf
+echo wsrep_node_name=${h}_$p >> __workdir/mysqldextra.cnf
+echo wsrep_cluster_address="gcomm://$join_ip" >> __workdir/mysqldextra.cnf
 
 shift
 shift
