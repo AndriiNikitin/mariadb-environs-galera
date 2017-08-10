@@ -8,7 +8,7 @@ env:
     - ENVIRON=10.2.7 WSREP_EXTRA_OPT=wsrep_sst_method=rsync
     - ENVIRON=10.2.7 WSREP_EXTRA_OPT=wsrep_sst_method=xtrabackup
     - ENVIRON=10.2.7 WSREP_EXTRA_OPT=wsrep_sst_method=xtrabackup-v2
-    - ENVIRON=10.2.7 WSREP_EXTRA_OPT=wsrep_sst_method=mariadbackup
+    - ENVIRON=10.2.7 WSREP_EXTRA_OPT=wsrep_sst_method=mariabackup
     - ENVIRON=10.1.25 WSREP_EXTRA_OPT=wsrep_sst_method=mysqldump
     - ENVIRON=10.1.25 WSREP_EXTRA_OPT=wsrep_sst_method=rsync
     - ENVIRON=10.1.25 WSREP_EXTRA_OPT=wsrep_sst_method=xtrabackup
