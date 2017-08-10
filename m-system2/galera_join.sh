@@ -18,8 +18,7 @@ else
   exit 2
 fi
 
-
-cat >> __workdir/my.cnf <<EOL
+cat >> __workdir/mysqldextra.cnf <<EOL
 binlog_format=ROW
 default-storage-engine=innodb
 innodb_autoinc_lock_mode=2
@@ -29,22 +28,20 @@ wsrep_on=ON
 wsrep_sst_method=mysqldump
 EOL
 
-h=$(hostname -i)
+h=$(__workdir/galera_ip.sh)
+p=$(__workdir/galera_port.sh)
 
-echo wsrep_cluster_name=$cluster_name  >> __workdir/my.cnf
-# check if we join the same host
-if [ "$join_ip" != "$h" ] ; then
-  # configure for remote node on default port
-  echo wsrep_node_address=$h >> __workdir/my.cnf
-  echo wsrep_node_name=$h >> __workdir/my.cnf
-  echo wsrep_cluster_address="gcomm://$join_ip" >> __workdir/my.cnf
-else
-  # configure for node on the same host
-  galera_port=$((__wid+4567))
-  echo wsrep_node_address=${h}:${galera_port} >> __workdir/my.cnf
-  echo wsrep_node_name=${h}${galera_port} >> __workdir/my.cnf
-  echo wsrep_cluster_address="gcomm://$join_ip:4567" >> __workdir/my.cnf
-fi
+echo wsrep_cluster_name=$cluster_name  >> __workdir/mysqldextra.cnf
+echo wsrep_node_address=$h:$p >> __workdir/mysqldextra.cnf
+echo wsrep_node_name=${h}_$p >> __workdir/mysqldextra.cnf
+echo wsrep_cluster_address="gcomm://$join_ip" >> __workdir/mysqldextra.cnf
+
+shift
+shift
+
+[ ! -z "$1" ] && for o in $@ ; do
+  echo $o >> __workdir/mysqldextra.cnf
+done
 
 
 mysqld_safe --defaults-file=__workdir/my.cnf --user=$(whoami) &

@@ -15,22 +15,30 @@ else
   exit 2
 fi
 
-
-cat >> /etc/my.cnf <<EOL
+t >> __workdir/mysqldextra.cnf <<EOL
 binlog_format=ROW
 default-storage-engine=innodb
 innodb_autoinc_lock_mode=2
 bind-address=0.0.0.0
+
 wsrep_on=ON
 wsrep_sst_method=mysqldump
 EOL
 
-h=$(hostname -i)
+h=$(__workdir/galera_ip.sh)
+p=$(__workdir/galera_port.sh)
 
-echo wsrep_node_address=$h >> /etc/my.cnf
-echo wsrep_node_name=$h >> /etc/my.cnf
-echo wsrep_cluster_name=$cluster_name  >> /etc/my.cnf
-echo wsrep_cluster_address="gcomm://$join_ip" >> /etc/my.cnf
+echo wsrep_cluster_name=$cluster_name  >> __workdir/mysqldextra.cnf
+echo wsrep_node_address=$h:$p >> __workdir/mysqldextra.cnf
+echo wsrep_node_name=${h}_$p >> __workdir/mysqldextra.cnf
+echo wsrep_cluster_address="gcomm://$join_ip" >> __workdir/mysqldextra.cnf
+
+shift
+shift
+
+[ ! -z "$1" ] && for o in $@ ; do
+  echo $o >> __workdir/mysqldextra.cnf
+done
 
 mysqld_safe --skip-syslog --user=$(whoami) &
 __workdir/wait_respond.sh
