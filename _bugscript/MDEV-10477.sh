@@ -15,6 +15,10 @@ function onExit {
 trap onExit EXIT
 
 _template/plant_cluster.sh cluster1
+echo m0 > cluster1/nodes.lst
+echo m1 >> cluster1/nodes.lst
+echo m2 >> cluster1/nodes.lst
+echo m3 >> cluster1/nodes.lst
 cluster1/replant.sh ${ver}
 
 ./build_or_download.sh m0

@@ -1,6 +1,6 @@
 set -e
 
-ver=${ENVIRON:-10.2.6}
+ver=${ENVIRON:-10.2.8}
 
 # just use current directory if called from framework
 if [ ! -f common.sh ] ; then
@@ -18,7 +18,10 @@ function onExit {
 trap onExit EXIT
 
 _template/plant_cluster.sh cluster1
-cat cluster1/nodes.lst
+echo m0 > cluster1/nodes.lst
+echo m1 >> cluster1/nodes.lst
+echo m2 >> cluster1/nodes.lst
+echo m3 >> cluster1/nodes.lst
 cluster1/replant.sh ${ver}
 
 ./build_or_download.sh m0
@@ -38,7 +41,7 @@ cluster1/replant.sh ${ver}
 # echo bash -x -v $(pwd)/_depot/m-tar/${ver}/bin/wsrep_sst_rsync '"$@"' > _depot/m-tar/${ver}/bin/wsrep_sst_rsyncx
 # chmod +x _depot/m-tar/${ver}/bin/wsrep_sst_rsyncx
 
-. cluster1/gen_cnf.sh
+. cluster1/gen_cnf.sh general_log=1
 . cluster1/install_db.sh
 . cluster1/galera_setup_acl.sh
 . cluster1/galera_start_new.sh $WSREP_EXTRA_OPT
