@@ -22,7 +22,7 @@ wsrep_on=ON
 wsrep_sst_method=mysqldump
 EOL
 
-h=$(hostname -i)
+h=$(__workdir/galera_ip.sh)
 
 echo wsrep_node_address=$h >> __workdir/mysqldextra.cnf
 echo wsrep_node_name=$h >> __workdir/mysqldextra.cnf

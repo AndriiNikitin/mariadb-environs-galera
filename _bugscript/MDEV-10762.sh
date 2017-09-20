@@ -59,7 +59,7 @@ sleep 10
 # and observe that cluster is functioning properly
 cluster1/sql.sh 'select count(*) from test.t'
 
-m4*/galera_join.sh $(hostname -i) $(hostname -i) wsrep_sst_method=rsync_buggy || true
+m4*/galera_join.sh $(m0*/galera_ip.sh) $(m0*/galera_ip.sh) wsrep_sst_method=rsync_buggy || true
 
 cluster1/sql.sh 'select count(*) from test.t'
 sleep 30
