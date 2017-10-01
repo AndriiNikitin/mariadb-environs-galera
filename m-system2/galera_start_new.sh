@@ -1,11 +1,16 @@
 #!/bin/bash
 
+if ! grep -q wsrep __workdir/mysqldextra.cnf 2>/dev/null ; then
+
+echo '[mysqld]' >> __workdir/mysqldextra.cnf
+
+
 if [ -f /usr/lib/galera/libgalera_smm.so ] ; then
-  echo wsrep_provider=/usr/lib/galera/libgalera_smm.so >> __workdir/my.cnf
+  echo wsrep_provider=/usr/lib/galera/libgalera_smm.so >> __workdir/mysqldextra.cnf
 elif [ -f /usr/lib64/galera/libgalera_smm.so ] ; then
-  echo wsrep_provider=/usr/lib64/galera/libgalera_smm.so >> __workdir/my.cnf
+  echo wsrep_provider=/usr/lib64/galera/libgalera_smm.so >> __workdir/mysqldextra.cnf
 elif [ -f __workdir/../_depot/m-tar/__version/lib/libgalera_smm.so ] ; then
-  echo wsrep_provider=__workdir/../_depot/m-tar/__version/lib/libgalera_smm.so >> __workdir/my.cnf
+  echo wsrep_provider=__workdir/../_depot/m-tar/__version/lib/libgalera_smm.so >> __workdir/mysqldextra.cnf
 else
   >&2 echo "Cannot find libgalera"
   exit 2
@@ -29,10 +34,11 @@ echo wsrep_node_name=${h}_$p >> __workdir/mysqldextra.cnf
 echo wsrep_cluster_address=gcomm://$h:$p >> __workdir/mysqldextra.cnf
 echo wsrep_cluster_name=${h}_$p >> __workdir/mysqldextra.cnf
 
+fi
+
 [ ! -z "$1" ] && for o in $@ ; do
   echo $o >> __workdir/mysqldextra.cnf
 done
 
 
-mysqld_safe --defaults-file=__workdir/my.cnf --user=$(whoami) --wsrep-new-cluster & 
-__workdir/wait_respond.sh
+__workdir/startup.sh --wsrep-new-cluster
