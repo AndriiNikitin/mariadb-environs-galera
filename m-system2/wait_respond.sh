@@ -4,8 +4,8 @@
 
 # first wait X seconds til pid file is created
 counter=45
-if [ "$counter" -ge 0 ] && [ ! -e __workdir/dt/p.id ] ; then
+while [ "$counter" -ge 0 ] && [ ! -e __workdir/dt/p.id ] ; do
   sleep 1
   ((counter--))
-fi
+done
 mysqladmin --defaults-file=__workdir/my.cnf --wait=5 ping
