@@ -12,8 +12,8 @@ for eid in $(cat __clusterdir/nodes.lst) ; do
   $eid*/startup.sh
   $eid*/sql.sh create user /*M!100100 if not exists*/ "$(whoami)"@"$(__clusterdir/../$eid*/galera_ip.sh)"
   $eid*/sql.sh grant all on \*.\* to "$(whoami)"@"$(__clusterdir/../$eid*/galera_ip.sh)"
-  $eid*/sql.sh create user /*M!100100 if not exists*/ "$(whoami)"@localhost
-  $eid*/sql.sh grant all on \*.\* to "$(whoami)"@localhost
+  $eid*/sql.sh create user /*M!100100 if not exists*/ "$(whoami)"@localhost || :
+  $eid*/sql.sh grant all on \*.\* to "$(whoami)"@localhost || :
   $eid*/sql.sh create user /*M!100100 if not exists*/ "galera"@"127.0.0.1" identified by '"galera"'
   $eid*/sql.sh grant all on \*.\* to galera@127.0.0.1
   $eid*/sql.sh create user /*M!100100 if not exists*/ mysql@localhost
