@@ -6,6 +6,6 @@
 counter=45
 if [ "$counter" -ge 0 ] && [ ! -e __workdir/dt/p.id ] ; then
   sleep 1
-  $((decr counter))
+  ((counter--))
 fi
 mysqladmin --defaults-file=__workdir/my.cnf --wait=5 ping
