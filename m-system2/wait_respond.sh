@@ -4,7 +4,7 @@
 
 # first wait X seconds til pid file is created
 counter=45
-if [ "$counter" -ge 0 ] && [ ! -e __workdir/dt/p.id ]
+if [ "$counter" -ge 0 ] && [ ! -e __workdir/dt/p.id ] ; then
   sleep 1
   $((decr counter))
 fi
