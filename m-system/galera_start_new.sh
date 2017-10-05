@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if ! grep -q wsrep __workdir/mysqldextra.cnf 2>/dev/null ; then
-
 echo '[mysqld]' >> __workdir/mysqldextra.cnf
+
+if ! grep -q wsrep_provider= __workdir/mysqldextra.cnf 2>/dev/null ; then
 
 if [ -f /usr/lib/galera/libgalera_smm.so ] ; then
   echo wsrep_provider=/usr/lib/galera/libgalera_smm.so >> __workdir/mysqldextra.cnf

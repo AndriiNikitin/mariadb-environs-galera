@@ -1,11 +1,18 @@
 #!/bin/bash
 
-[ ! -z "$1" ] || { echo "Expected name of Galera cluster as first parameter; got ($1)";  exit 2; }
-[ ! -z "$2" ] || { echo "Expected IP of Galera node in 2nd parameter; got ($2)";  exit 2; }
+[ ! -z "$1" ] || { echo "Expected name of donor environ as first parameter; got ($1)";  exit 2; }
+[ -d ${1}* ] || { echo "Cannot find environ ($1)";  exit 2; }
 
-cluster_name=$1
+set -e
 
-join_ip=$2
+cluster_name=$($1*/galera_read_cluster_name.sh)
+join_ip=$($1*/galera_read_ip.sh)
+
+touch __workdir/mysqldextra.cnf
+
+echo '[mysqld]' >> __workdir/mysqldextra.cnf
+
+if ! grep -q wsrep_provider= __workdir/mysqldextra.cnf ; then
 
 if [ -f /usr/lib/galera/libgalera_smm.so ] ; then
   echo wsrep_provider=/usr/lib/galera/libgalera_smm.so >> __workdir/mysqldextra.cnf
@@ -28,26 +35,16 @@ wsrep_on=ON
 wsrep_sst_method=mysqldump
 EOL
 
-h=$(__workdir/galera_ip.sh)
-
-set -x
-
-echo wsrep_cluster_name=$cluster_name  >> __workdir/mysqldextra.cnf
-# check if we join the same host
-if [ "$join_ip" != "$h" ] ; then
-  # configure for remote node on default port
-  echo wsrep_node_address=$h >> __workdir/mysqldextra.cnf
-  echo wsrep_node_name=$h >> __workdir/mysqldextra.cnf
-  echo wsrep_cluster_address="gcomm://$join_ip" >> __workdir/mysqldextra.cnf
-else
-  # configure for node on the same host
-  galera_port=$((__wid+4567))
-  echo wsrep_node_address=${h}:${galera_port} >> __workdir/mysqldextra.cnf
-  echo wsrep_node_name=${h}${galera_port} >> __workdir/mysqldextra.cnf
-  echo wsrep_cluster_address="gcomm://$join_ip:4567" >> __workdir/mysqldextra.cnf
 fi
 
-shift
+h=$(__workdir/galera_ip.sh)
+p=$(__workdir/galera_port.sh)
+
+echo wsrep_cluster_name=$cluster_name  >> __workdir/mysqldextra.cnf
+echo wsrep_node_address=$h:$p >> __workdir/mysqldextra.cnf
+echo wsrep_node_name=${h}_$p >> __workdir/mysqldextra.cnf
+echo wsrep_cluster_address="gcomm://$join_ip" >> __workdir/mysqldextra.cnf
+
 shift
 
 [ ! -z "$1" ] && for o in $@ ; do
@@ -57,7 +54,4 @@ done
 # this to let galera find mysqldump and mysql
 export PATH=__blddir/client:__srcdir/scripts:__blddir/extra:$PATH
 
-bash __srcdir/scripts/mysqld_safe.sh --defaults-file=__workdir/my.cnf --ledir=__blddir/sql --skip-syslog --user=$(whoami) &
-sleep 20
-__workdir/wait_respond.sh
-
+__workdir/startup.sh

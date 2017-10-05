@@ -9,4 +9,4 @@ while [ "$counter" -ge 0 ] && [ ! -e __workdir/dt/p.id ] ; do
   ((counter--))
 done
 
-__workdir/../_depot/m-tar/__version/bin/mysqladmin --defaults-file=__workdir/my.cnf --wait=5 ping
+__blddir/client/mysqladmin --defaults-file=__workdir/my.cnf --wait=5 ping

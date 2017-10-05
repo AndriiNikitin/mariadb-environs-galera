@@ -10,10 +10,9 @@ join_ip=$($1*/galera_read_ip.sh)
 
 touch __workdir/mysqldextra.cnf
 
-if ! grep -q wsrep __workdir/mysqldextra.cnf ; then
-
 echo '[mysqld]' >> __workdir/mysqldextra.cnf
 
+if ! grep -q wsrep_provider= __workdir/mysqldextra.cnf ; then
 
 if [ -f /usr/lib/galera/libgalera_smm.so ] ; then
   echo wsrep_provider=/usr/lib/galera/libgalera_smm.so >> __workdir/mysqldextra.cnf
