@@ -54,6 +54,4 @@ done
 # this to let galera find mysqldump and mysql
 export PATH=__blddir/client:__blddir/scripts:__blddir/extra:__blddir/extra/mariabackup:$PATH
 
-echo $(which wsrep_sst_mariabackup)
-
 __workdir/startup.sh
